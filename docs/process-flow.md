@@ -27,7 +27,7 @@ A swimlane view of who acts, what the system checks, and how the fictional scree
 
 The local HTTP app commits to SQLite before returning a successful response. The public Streamlit demo keeps records in isolated browser-session history; reloads/session termination can clear them. These paths share the same evaluation engine but use different storage.
 
-The next-step labels communicate the screening result. There is no actual task assignment, override approval, or downstream underwriting integration in this MVP. Eligible does not mean loan approved.
+The next-step labels communicate the screening result. There is no actual task assignment, authenticated override approval, or downstream underwriting integration in this MVP. A separate local [review demonstration](governance.md) records proposed screening dispositions using caller-supplied labels. Eligible does not mean loan approved.
 
 ## Requirements and implementation mapping
 
