@@ -61,7 +61,7 @@ $env:PYTHONPATH = "."
 python tests/ui_smoke.py
 ```
 
-Playwright is a verification tool, not a runtime dependency. The committed CI workflow runs core tests on Python 3.11, 3.12, and 3.13; hosted CI has not run yet because this package has not been published.
+Playwright is a verification tool, not a runtime dependency. The committed CI workflow runs core tests on Python 3.11, 3.12, and 3.13; [hosted CI results are available in GitHub Actions](https://github.com/cmcgh33/creditflow-lending-workflow/actions).
 
 ## Manual owner review — still pending
 
