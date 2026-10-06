@@ -1,0 +1,428 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CreditFlow local demo API",
+    "version": "1.0.0",
+    "description": "Fictional screening only. No authentication. Loopback demo; not a lending approval API."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8000"
+    }
+  ],
+  "paths": {
+    "/api/policy": {
+      "get": {
+        "operationId": "getPolicy",
+        "responses": {
+          "200": {
+            "description": "Current fixed demo policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Policy"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/evaluations": {
+      "get": {
+        "operationId": "listEvaluations",
+        "responses": {
+          "200": {
+            "description": "Latest 100 records, newest first",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/History"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "evaluateApplication",
+        "description": "Validates, evaluates, and saves a new record. Every call creates an independent evaluation; no idempotency key. Body limited to 8192 bytes. Cross-origin browser writes rejected.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Application"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved evaluation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Cross-origin write",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Empty or oversized body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported media type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Field validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/evaluations/{id}": {
+      "get": {
+        "operationId": "getEvaluation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Saved evaluation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Application": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "borrower",
+          "property_type",
+          "loan_amount",
+          "property_value",
+          "noi",
+          "annual_debt_service"
+        ],
+        "properties": {
+          "borrower": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "property_type": {
+            "type": "string",
+            "enum": [
+              "Industrial",
+              "Office",
+              "Retail",
+              "Multifamily"
+            ]
+          },
+          "loan_amount": {
+            "oneOf": [
+              {
+                "type": "string",
+                "maxLength": 30,
+                "description": "Finite decimal amount; at most two decimal places after normalization."
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "Amount in USD, 1\u20131,000,000,000 inclusive, maximum two decimals."
+          },
+          "property_value": {
+            "oneOf": [
+              {
+                "type": "string",
+                "maxLength": 30,
+                "description": "Finite decimal amount; at most two decimal places after normalization."
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "Amount in USD, 1\u20131,000,000,000 inclusive, maximum two decimals."
+          },
+          "noi": {
+            "oneOf": [
+              {
+                "type": "string",
+                "maxLength": 30,
+                "description": "Finite decimal amount; at most two decimal places after normalization."
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "Amount in USD, 0\u20131,000,000,000 inclusive, maximum two decimals."
+          },
+          "annual_debt_service": {
+            "oneOf": [
+              {
+                "type": "string",
+                "maxLength": 30,
+                "description": "Finite decimal amount; at most two decimal places after normalization."
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "Amount in USD, 1\u20131,000,000,000 inclusive, maximum two decimals."
+          }
+        }
+      },
+      "Policy": {
+        "type": "object",
+        "required": [
+          "version",
+          "name",
+          "rules",
+          "precedence"
+        ],
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "precedence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RuleResult": {
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "metric",
+          "value",
+          "comparison_value",
+          "status",
+          "target",
+          "explanation"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "metric": {
+            "type": "string"
+          },
+          "comparison_value": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "explanation": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "review",
+              "decline"
+            ]
+          }
+        }
+      },
+      "Evaluation": {
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "application",
+          "policy_version",
+          "policy_snapshot",
+          "outcome",
+          "summary",
+          "metrics",
+          "rules"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "application": {
+            "$ref": "#/components/schemas/Application"
+          },
+          "policy_version": {
+            "type": "string"
+          },
+          "policy_snapshot": {
+            "$ref": "#/components/schemas/Policy"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "eligible",
+              "review",
+              "decline"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "metrics": {
+            "type": "object",
+            "required": [
+              "dscr",
+              "ltv",
+              "debt_yield"
+            ],
+            "properties": {
+              "dscr": {
+                "type": "number"
+              },
+              "ltv": {
+                "type": "number"
+              },
+              "debt_yield": {
+                "type": "number"
+              }
+            }
+          },
+          "rules": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "$ref": "#/components/schemas/RuleResult"
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "History": {
+        "type": "object",
+        "required": [
+          "items",
+          "limit"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Evaluation"
+            }
+          },
+          "limit": {
+            "type": "integer",
+            "const": 100
+          }
+        }
+      }
+    }
+  }
+}
