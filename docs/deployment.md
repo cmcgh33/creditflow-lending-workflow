@@ -1,6 +1,6 @@
 # Streamlit demo deployment
 
-The repository contains a Streamlit adapter ready for Community Cloud. Deployment in the owner's account is pending; no live URL is claimed here.
+The demo is deployed at [https://carla-creditflow.streamlit.app/](https://carla-creditflow.streamlit.app/). Live-browser checks on 2026-10-06 confirmed eligible, review, and decline outcomes and saved-evaluation inspection.
 
 ## Community Cloud settings
 
@@ -10,7 +10,7 @@ The repository contains a Streamlit adapter ready for Community Cloud. Deploymen
 | Branch | main |
 | Main file path | streamlit_app.py |
 | Python version | 3.12 |
-| Suggested app subdomain | carla-creditflow (if available) |
+| App subdomain | carla-creditflow |
 | Secrets | None required |
 
 1. Sign in to [Streamlit Community Cloud](https://share.streamlit.io/).
@@ -19,7 +19,7 @@ The repository contains a Streamlit adapter ready for Community Cloud. Deploymen
 4. In advanced settings, choose Python 3.12. Optionally select the suggested subdomain if available.
 5. Click **Deploy**. Wait for the application to finish building.
 6. Verify the three scenarios, inspect history, and download an evaluation JSON.
-7. Add the confirmed URL to the project README and profile README after testing it.
+7. Update the project README and profile README if the deployed URL changes.
 
 [Official deployment instructions](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy).
 
