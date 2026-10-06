@@ -6,9 +6,11 @@ CreditFlow is a commercial-lending portfolio project that connects business requ
 
 ![CreditFlow analyst workspace](docs/images/workspace.png)
 
+[**Try the live demo ↗**](https://carla-creditflow.streamlit.app/) · [Business rules](docs/business-rules.md) · [Verification and UAT](docs/verification.md)
+
 ## Take a two-minute tour
 
-1. Run the app and evaluate **Harbor Point**: all three screening rules pass.
+1. Open the live demo or run the local app and evaluate **Harbor Point**: all three screening rules pass.
 2. Choose **Juniper Square**: see why the case needs analyst review.
 3. Choose **Cedar Commons**: see decline precedence across triggered rules.
 4. Inspect a previous evaluation and export its JSON evidence.
@@ -43,7 +45,7 @@ python -m pip install -r requirements.txt
 python -m streamlit run streamlit_app.py
 ```
 
-See the [deployment guide](docs/deployment.md) for Community Cloud settings. A public deployment URL has not yet been confirmed.
+See the [deployment guide](docs/deployment.md) for Community Cloud settings. The public demo is deployed at [https://carla-creditflow.streamlit.app/](https://carla-creditflow.streamlit.app/).
 
 ## What this demonstrates
 
@@ -64,6 +66,6 @@ See the [deployment guide](docs/deployment.md) for Community Cloud settings. A p
 
 All borrowers, rules, and scenarios are fictional. This is educational screening, **not a validated credit model or lending approval**. It does not use employer data or policy. An eligible result means only that the three demo rules passed.
 
-This version runs on loopback for local review. It has no authentication, role enforcement, policy administration, manual overrides, or production hosting. Saved records are append-only through the API, but the underlying database is not a tamper-proof audit ledger. No business-impact outcomes are claimed.
+The original HTTP workspace runs on loopback for local review; the Streamlit demo is publicly hosted with session-only history. It has no authentication, role enforcement, policy administration, manual overrides, or production hosting. Saved records are append-only through the API, but the underlying database is not a tamper-proof audit ledger. No business-impact outcomes are claimed.
 
 Python standard library · SQLite · HTML · CSS · JavaScript
