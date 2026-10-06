@@ -18,7 +18,7 @@ These are research hypotheses for a fictional product, not findings from intervi
 
 Included: four numeric inputs, borrower/property context, deterministic screening, history, evidence export, API contract, and automated checks.
 
-Excluded: real applications, identity verification, credit bureau integrations, document collection, loan pricing, approval authority, overrides, production authentication, and portfolio analytics. This keeps the first release focused on one complete path.
+Excluded: real applications, identity verification, credit bureau integrations, document collection, loan pricing, approval authority, authenticated overrides, production authentication, and portfolio analytics. This keeps the first release focused on one complete path.
 
 ## Workflow
 
@@ -50,3 +50,6 @@ Before a real implementation: confirm user personas through interviews, establis
 
 Success measures for a future pilot could include explanation comprehension, time to resolve an exception, and evidence completeness. Baselines and targets would be agreed before collecting results.
 
+
+## Governance extension
+The local workspace now illustrates proposed screening changes and independent reviewer labels, preserving the original evaluation. See [governance](governance.md) for implemented behavior, evidence and identity limitations. The original process diagram describes screening; the review extension is documented separately.

@@ -83,3 +83,8 @@ Added 2026-10-06. Three additional AppTest checks passed: all three scenario out
 ## Public demo smoke check
 
 On 2026-10-06, the deployed [Streamlit demo](https://carla-creditflow.streamlit.app/) loaded in a remote Chromium browser. Harbor Point returned eligible (DSCR 1.37, LTV 69.23%, debt yield 11.56%); Juniper Square returned review (1.17, 77.59%, 7.78%); Cedar Commons returned decline (0.83, 90.00%, 5.56%). All three evaluations appeared in session history. Inspect restored Harbor Point's saved result and selected the saved-scenario context. This is a technical smoke check, not owner UAT or production validation.
+
+## Governance extension — 6 October 2026
+Updated standard-library suite: 25 tests passed, including review proposal/resolution API, original evidence preservation, self-review and repeat-resolution rejection, invalid proposals and concurrent resolution. Governance is local HTTP/SQLite only; the public Streamlit app has no review controls. [Scope and walkthrough](governance.md).
+
+The updated Playwright script includes proposing a review, rejected self-review, independent resolution, unchanged original outcome and review export. It is prepared but not executed here because Chromium could not be downloaded. GitHub CI is configured to run this script after publication; fresh browser evidence is pending.

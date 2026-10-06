@@ -31,6 +31,21 @@ with tempfile.TemporaryDirectory() as folder:
             assert evidence['application']['borrower']=='Harbor Point Holdings'
             assert evidence['policy_snapshot']['version']=='demo-cre-1.0'
             assert 'comparison_value' in evidence['rules'][0]
+            page.fill('#proposer','Analyst A');page.fill('#review-rationale','Fictional lease review needed')
+            page.select_option('#proposed-outcome','review');page.locator('#review-form button').click()
+            expect(page.locator('#resolve-form')).to_be_visible()
+            page.fill('#reviewer','Analyst A');page.fill('#resolve-rationale','Self review')
+            page.locator('#resolve-form button').click()
+            expect(page.locator('#review-status')).to_contain_text('different demo reviewer')
+            page.fill('#reviewer','Reviewer B');page.fill('#resolve-rationale','Independent review accepted')
+            page.locator('#resolve-form button').click()
+            expect(page.locator('#review-events')).to_contain_text('ACCEPTED')
+            expect(page.locator('#result-state')).to_contain_text('Eligible')
+            with page.expect_download() as review_download:page.click('#export-reviews')
+            review_evidence=json.loads(Path(review_download.value.path()).read_text())
+            assert [e['status'] for e in review_evidence['review_events']]==['pending','accepted']
+            assert review_evidence['evaluation']['outcome']=='eligible'
+            page.screenshot(path='docs/images/governance.png',full_page=True)
             page.fill('#noi','510000')
             assert 'unevaluated changes' in page.locator('#result-meta').inner_text()
             page.locator('#history-body tr').last.locator('button').click()

@@ -7,6 +7,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from .engine import evaluate, ValidationError, POLICY
 from .storage import Store
+from .governance import ReviewError
 WEB = Path(__file__).resolve().parent.parent / "web"
 
 class Handler(BaseHTTPRequestHandler):
@@ -27,6 +28,12 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_body(200, POLICY)
         if path == "/api/evaluations":
             return self.send_body(200, {"items": self.server.store.list(), "limit": 100})
+        get_parts = path.strip("/").split("/")
+        if len(get_parts) == 4 and get_parts[:2] == ["api", "evaluations"] and get_parts[3] == "reviews":
+            evaluation_id = path.split("/")[3]
+            if not self.server.store.get(evaluation_id):
+                return self.send_body(404, {"error": "Evaluation not found"})
+            return self.send_body(200, {"items": self.server.store.review_history(evaluation_id)})
         if path.startswith("/api/evaluations/"):
             record = self.server.store.get(path.rsplit("/", 1)[1])
             return self.send_body(200, record) if record else self.send_body(404, {"error": "Evaluation not found"})
@@ -36,7 +43,11 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_body(200, (WEB / name).read_bytes(), mime)
         return self.send_body(404, {"error": "Not found"})
     def do_POST(self):
-        if urlparse(self.path).path != "/api/evaluations":
+        path = urlparse(self.path).path
+        parts = path.strip("/").split("/")
+        proposal_route = len(parts) == 4 and parts[:2] == ["api", "evaluations"] and parts[3] == "reviews"
+        resolution_route = len(parts) == 4 and parts[:2] == ["api", "reviews"] and parts[3] == "resolve"
+        if path != "/api/evaluations" and not proposal_route and not resolution_route:
             return self.send_body(404, {"error": "Not found"})
         # Block cross-origin browser writes; this demo has no authentication.
         if self.headers.get("Origin") and self.headers["Origin"] != f"http://{self.headers.get('Host')}":
@@ -51,7 +62,16 @@ class Handler(BaseHTTPRequestHandler):
         except (ValueError, UnicodeDecodeError):
             return self.send_body(400, {"error": "Malformed JSON"})
         try:
-            record = self.server.store.save(evaluate(payload))
+            if proposal_route:
+                record = self.server.store.propose_review(parts[2], payload)
+            elif resolution_route:
+                record = self.server.store.resolve_review(parts[2], payload)
+            else:
+                record = self.server.store.save(evaluate(payload))
+        except KeyError:
+            return self.send_body(404, {"error": "Review or evaluation not found"})
+        except ReviewError as exc:
+            return self.send_body(422, {"error": str(exc)})
         except ValidationError as exc:
             return self.send_body(422, {"error": "Invalid application", "fields": exc.errors})
         return self.send_body(201, record)

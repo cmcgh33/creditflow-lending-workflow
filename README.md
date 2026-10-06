@@ -16,6 +16,10 @@ CreditFlow is a commercial-lending portfolio project that connects business requ
 4. Inspect a previous evaluation and export its JSON evidence.
 5. Follow a requirement through the [case study](docs/case-study.md), [rule specification](docs/business-rules.md), and [test evidence](docs/verification.md).
 
+## Review governance
+
+The local HTTP workspace now supports proposed screening overrides, a separate reviewer label, one-time resolution and exported review events while preserving the original policy evidence. [Governance and demo walkthrough](docs/governance.md). These are fictional identity labels, not authentication or loan approval. The public Streamlit adapter continues to demonstrate screening.
+
 ## Process and decision flow
 
 ![CreditFlow analyst and system swimlane diagram](docs/diagrams/creditflow-process.svg)
@@ -75,7 +79,7 @@ See the [deployment guide](docs/deployment.md) for Community Cloud settings. The
 
 All borrowers, rules, and scenarios are fictional. This is educational screening, **not a validated credit model or lending approval**. It does not use employer data or policy. An eligible result means only that the three demo rules passed.
 
-The original HTTP workspace runs on loopback for local review; the Streamlit demo is publicly hosted with session-only history. It has no authentication, role enforcement, policy administration, manual overrides, or production hosting. Saved records are append-only through the API, but the underlying database is not a tamper-proof audit ledger. No business-impact outcomes are claimed.
+The original HTTP workspace runs on loopback for local review; the Streamlit demo is publicly hosted with session-only history. It has no authentication, role enforcement, policy administration, authenticated override authority, or production hosting. Saved records are append-only through the API, but the underlying database is not a tamper-proof audit ledger. No business-impact outcomes are claimed.
 
 Python standard library · SQLite · HTML · CSS · JavaScript
 

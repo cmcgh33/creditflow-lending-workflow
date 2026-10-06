@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "CreditFlow local demo API",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Fictional screening only. No authentication. Loopback demo; not a lending approval API."
   },
   "servers": [
@@ -154,6 +154,117 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/evaluations/{id}/reviews": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "proposeReview",
+        "description": "Fictional screening review; caller-supplied identity labels are not authentication. Original evaluation is preserved.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewProposal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved review event snapshot"
+          },
+          "400": {
+            "description": "Malformed JSON"
+          },
+          "403": {
+            "description": "Cross-origin write"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Empty or oversized body"
+          },
+          "415": {
+            "description": "Use JSON"
+          },
+          "422": {
+            "description": "Invalid review or already resolved"
+          }
+        }
+      },
+      "get": {
+        "operationId": "reviewHistory",
+        "responses": {
+          "200": {
+            "description": "Ordered pending and resolved event snapshots in items array"
+          },
+          "404": {
+            "description": "Evaluation not found"
+          }
+        }
+      }
+    },
+    "/api/reviews/{id}/resolve": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "resolveReview",
+        "description": "Fictional screening review; caller-supplied identity labels are not authentication. Original evaluation is preserved.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewResolution"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved review event snapshot"
+          },
+          "400": {
+            "description": "Malformed JSON"
+          },
+          "403": {
+            "description": "Cross-origin write"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "413": {
+            "description": "Empty or oversized body"
+          },
+          "415": {
+            "description": "Use JSON"
+          },
+          "422": {
+            "description": "Invalid review or already resolved"
           }
         }
       }
@@ -420,6 +531,63 @@
           "limit": {
             "type": "integer",
             "const": 100
+          }
+        }
+      },
+      "ReviewProposal": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposer",
+          "rationale",
+          "proposed_outcome"
+        ],
+        "properties": {
+          "proposer": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "proposed_outcome": {
+            "type": "string",
+            "enum": [
+              "eligible",
+              "review",
+              "decline"
+            ]
+          }
+        }
+      },
+      "ReviewResolution": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "reviewer",
+          "rationale",
+          "decision"
+        ],
+        "properties": {
+          "reviewer": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "accepted",
+              "rejected"
+            ]
           }
         }
       }
