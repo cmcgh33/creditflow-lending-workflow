@@ -22,16 +22,11 @@ Excluded: real applications, identity verification, credit bureau integrations, 
 
 ## Workflow
 
-```mermaid
-flowchart TD
-  A["Enter fictional loan"] --> B{"Inputs valid?"}
-  B -->|No| C["Show field errors"]
-  C --> A
-  B -->|Yes| D["Compute ratios and apply policy"]
-  D --> E["Save evaluation and policy snapshot"]
-  E --> F["Explain screening outcome"]
-  F --> G["Inspect history or export evidence"]
-```
+![CreditFlow colored process and decision swimlanes](diagrams/creditflow-process.svg)
+
+[Explore the full process flow](process-flow.md) · [Open the editable diagram](diagrams/creditflow-process.drawio)
+
+The diagram separates analyst actions, system checks, and screening outcomes. Colors identify input correction, review, decline, and eligible paths; every status also has a text label. All rules are evaluated before the saved outcome is routed. The local workspace uses SQLite history, while the hosted demo uses per-session history.
 
 If persistence fails, the API does not issue a successful evaluation response. Analyst handoff is communicated as a next step; there is no task assignment or downstream underwriting system in this release.
 
@@ -54,3 +49,4 @@ The MVP uses fixed versioned rules rather than a policy editor. This makes the r
 Before a real implementation: confirm user personas through interviews, establish policy ownership and approval authority, define data lineage and retention, design role-specific workflows, validate thresholds with authorized credit experts, and establish production service requirements.
 
 Success measures for a future pilot could include explanation comprehension, time to resolve an exception, and evidence completeness. Baselines and targets would be agreed before collecting results.
+

@@ -16,6 +16,14 @@ CreditFlow is a commercial-lending portfolio project that connects business requ
 4. Inspect a previous evaluation and export its JSON evidence.
 5. Follow a requirement through the [case study](docs/case-study.md), [rule specification](docs/business-rules.md), and [test evidence](docs/verification.md).
 
+## Process and decision flow
+
+![CreditFlow analyst and system swimlane diagram](docs/diagrams/creditflow-process.svg)
+
+[Explore the process flow](docs/process-flow.md) · [Editable diagrams.net file](docs/diagrams/creditflow-process.drawio) · [Full-size PNG](docs/diagrams/creditflow-process.png)
+
+The diagram shows input correction, all-rule evaluation, saved evidence, and decline/review/eligible routing with analyst and system responsibilities.
+
 ## Run locally
 
 Requires Python **3.11 or newer**. No third-party runtime dependencies, credentials, or external services.
@@ -57,6 +65,7 @@ See the [deployment guide](docs/deployment.md) for Community Cloud settings. The
 | Artifact | Review focus |
 | --- | --- |
 | [Product case study](docs/case-study.md) | Problem, scope, personas, workflow, and acceptance criteria |
+| [Process and decision flow](docs/process-flow.md) | Colored swimlanes, decision gateways, and editable diagram |
 | [Business rules](docs/business-rules.md) | Formulas, threshold boundaries, and outcome precedence |
 | [Architecture](docs/architecture.md) | Components, data model, and design choices |
 | [OpenAPI contract](docs/openapi.json) | Request/response shapes and error behavior |
@@ -69,3 +78,4 @@ All borrowers, rules, and scenarios are fictional. This is educational screening
 The original HTTP workspace runs on loopback for local review; the Streamlit demo is publicly hosted with session-only history. It has no authentication, role enforcement, policy administration, manual overrides, or production hosting. Saved records are append-only through the API, but the underlying database is not a tamper-proof audit ledger. No business-impact outcomes are claimed.
 
 Python standard library · SQLite · HTML · CSS · JavaScript
+

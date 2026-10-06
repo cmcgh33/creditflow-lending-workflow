@@ -1,0 +1,49 @@
+flowchart TD
+  subgraph Analyst["Analyst actions"]
+    A["Enter fictional loan"]
+    C["Correct field errors"]
+    X["Review reasons; inspect history; export JSON"]
+  end
+  subgraph System["System validation and evaluation"]
+    B{"Inputs valid?"}
+    D["Calculate DSCR, LTV, debt yield"]
+    E["Evaluate every rule; determine outcome"]
+    F["Record inputs, result, reasons and policy snapshot"]
+    G{"Any decline rule?"}
+    H{"Any review rule?"}
+    I["All three rules pass"]
+  end
+  subgraph Outcome["Screening outcome and explained next step"]
+    J["Decline: outside fictional screening limits"]
+    K["Review: analyst closer look needed"]
+    L["Eligible: proceed to fictional underwriting"]
+  end
+  A --> B
+  B -->|No| C
+  C --> A
+  B -->|Yes| D
+  D --> E
+  E --> F
+  F --> G
+  G -->|Yes| J
+  G -->|No| H
+  H -->|Yes| K
+  H -->|No| I
+  I --> L
+  J --> X
+  K --> X
+  L --> X
+  classDef analyst fill:#132e38,stroke:#63e0d9,color:#eef3ff,stroke-width:2px
+  classDef system fill:#242444,stroke:#aea0ff,color:#eef3ff,stroke-width:2px
+  classDef gateway fill:#282c47,stroke:#9faed0,color:#eef3ff,stroke-width:2px
+  classDef error fill:#452d21,stroke:#efb86e,color:#fff0d5,stroke-width:2px
+  classDef decline fill:#42253c,stroke:#f194c2,color:#ffe1f0,stroke-width:2px
+  classDef review fill:#40351f,stroke:#f4d28a,color:#fff1cf,stroke-width:2px
+  classDef eligible fill:#173d38,stroke:#8ce8cc,color:#dcfff4,stroke-width:2px
+  class A,X analyst
+  class D,E,F system
+  class B,G,H gateway
+  class C error
+  class J decline
+  class K review
+  class I,L eligible
