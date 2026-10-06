@@ -74,3 +74,8 @@ These checks are proposed for Carla's review, not recorded as completed sign-off
 5. Navigate with a keyboard; assess label readability at the preferred zoom.
 
 Not yet validated: Windows/macOS runtime, browsers other than Chromium, screen-reader behavior, load/concurrency, recovery from storage failures, and any real lending policy. There is no production deployment or real-user pilot.
+
+## Streamlit adapter verification
+
+Added 2026-10-06. Three additional AppTest checks passed: all three scenario outcomes plus saved-record inspection, invalid input without history insertion, and independent history across two sessions. The adapter uses the same decision engine. A local Chromium browser check also passed evaluation, export-control presence, desktop/mobile rendering without page overflow at 390px, and absence of page errors. Community Cloud deployment and owner UAT remain pending.
+

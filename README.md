@@ -34,6 +34,17 @@ The app creates `data/creditflow.sqlite3` on first run. Stop it with Ctrl+C. To 
 python -m creditflow.server --port 8080 --db data/my-demo.sqlite3
 ```
 
+## Browser demo / Streamlit hosting
+
+The public-demo adapter in `streamlit_app.py` uses the same decision engine with a dark Streamlit interface. Its history is isolated to each browser session and may clear on reload; export JSON to keep evidence. The original local workspace uses SQLite for persistent history.
+
+```bash
+python -m pip install -r requirements.txt
+python -m streamlit run streamlit_app.py
+```
+
+See the [deployment guide](docs/deployment.md) for Community Cloud settings. A public deployment URL has not yet been confirmed.
+
 ## What this demonstrates
 
 - **Business analysis:** personas, workflow, user stories, acceptance criteria, and traceability.

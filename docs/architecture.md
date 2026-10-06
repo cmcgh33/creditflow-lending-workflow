@@ -35,6 +35,12 @@ POST validation occurs before insertion. A successful response is sent after SQL
 
 Future production design would require authenticated access, role enforcement, approved policy lifecycle, database migrations, structured operational errors, rate limits, monitoring, retention, encryption strategy, tamper-evident history, and idempotency. Those are outside this local MVP.
 
+## Hosted demo adapter
+
+`streamlit_app.py` calls the existing pure decision engine directly. It does not expose the local HTTP API or use SQLite. Each browser session has independent, in-memory history capped at 100 records; ending/reloading a session can discard it. JSON download preserves an individual evaluation. No visitor data is intentionally persisted to a shared application database. The demo remains fictional and unauthenticated.
+
+The Streamlit interface uses native controls with the same dark palette; the original custom HTML dashboard remains available through the local server.
+
 ## Technical references
 
 - [Python HTTP server documentation](https://docs.python.org/3/library/http.server.html): demo server capabilities and production limitations.
