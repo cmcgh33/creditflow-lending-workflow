@@ -77,5 +77,9 @@ Not yet validated: Windows/macOS runtime, browsers other than Chromium, screen-r
 
 ## Streamlit adapter verification
 
-Added 2026-10-06. Three additional AppTest checks passed: all three scenario outcomes plus saved-record inspection, invalid input without history insertion, and independent history across two sessions. The adapter uses the same decision engine. A local Chromium browser check also passed evaluation, export-control presence, desktop/mobile rendering without page overflow at 390px, and absence of page errors. Community Cloud deployment and owner UAT remain pending.
+Added 2026-10-06. Three additional AppTest checks passed: all three scenario outcomes plus saved-record inspection, invalid input without history insertion, and independent history across two sessions. The adapter uses the same decision engine. A local Chromium browser check also passed evaluation, export-control presence, desktop/mobile rendering without page overflow at 390px, and absence of page errors. Community Cloud deployment is complete; owner UAT remains pending.
 
+
+## Public demo smoke check
+
+On 2026-10-06, the deployed [Streamlit demo](https://carla-creditflow.streamlit.app/) loaded in a remote Chromium browser. Harbor Point returned eligible (DSCR 1.37, LTV 69.23%, debt yield 11.56%); Juniper Square returned review (1.17, 77.59%, 7.78%); Cedar Commons returned decline (0.83, 90.00%, 5.56%). All three evaluations appeared in session history. Inspect restored Harbor Point's saved result and selected the saved-scenario context. This is a technical smoke check, not owner UAT or production validation.
